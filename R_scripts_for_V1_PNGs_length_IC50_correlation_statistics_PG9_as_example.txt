@@ -1,0 +1,29 @@
+getwd()
+setwd("C:/Users/lenovo/Desktop/坚果云同步/R_statistics_for_PG9_v1_loop")
+
+library(ggplot2)
+
+# load neutralized data 
+datasheet_PG9 <- read.csv("PG9_IC50_546_neutralized_seqs_clean_data_summary_brief_v.csv")
+datasheet_PG9
+
+
+#length_Ig10_IC50
+sp <- ggplot(datasheet_PG9,aes(x=length,y=Ig10_IC50)) 
+sp+geom_jitter(shape=16,width = 0.2,size=3.5)+stat_smooth(method = lm,se=FALSE,color="blue")+ theme(panel.background = element_blank(),axis.line = element_line())
+
+#PNGs_Ig10_IC50
+
+sp1 <- ggplot(datasheet_PG9,aes(x=PNGs,y=Ig10_IC50))
+sp1 + geom_boxplot(aes(group= PNGs),outlier.shape = NA,color="blue") + geom_jitter(shape=20,width = 0.2,size=1) + theme(panel.background = element_blank(),axis.line = element_line())
+
+
+#correlation
+
+data_new <- read.csv("PG9_IC50_546_neutralized_seqs_clean_data_summary_brief_v.csv", header = TRUE, stringsAsFactors = F)
+data_new[,5]  # IC50_value  ,index为列参数，从零开始
+data_new[,8]  # length
+data_new[,11] # PNGs
+cor.test(data_new[,11],data_new[,5],method = "kendall")  # PNGs-IC50
+cor.test(data_new[,8],data_new[,5],method = "kendall")#  length_IC50
+cor.test(data_new[,8],data_new[,11],method = "kendall") #length_PNGS
